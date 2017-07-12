@@ -9,9 +9,10 @@
   "author": "Michael Yu",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.15.3",
-    "ejs": "^2.3.4",
     "body-parser": "^1.14.2",
-    "cookie-parser": "^1.4.0"
+    "cookie-parser": "^1.4.0",
+    "ejs": "^2.3.4",
+    "express": "^4.15.3",
+    "request": "^2.81.0"
   }
 }
