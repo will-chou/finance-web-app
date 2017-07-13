@@ -9,11 +9,14 @@
   "author": "Michael Yu",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^1.0.2",
     "body-parser": "^1.14.2",
     "cookie-parser": "^1.4.0",
     "ejs": "^2.3.4",
     "express": "^4.15.3",
+    "express-session": "^1.15.3",
     "mongoose": "^4.10.8",
+    "mongoose-type-email": "^1.0.5",
     "request": "^2.81.0"
   }
 }

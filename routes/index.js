@@ -1,54 +1,111 @@
 var express = require('express');
-var router = express.Router();
-// var User = require('../lib/User');
+var router = express.Router(); 
+var User = require('../lib/Users');		//schema located here
 var mongoose = require('mongoose');
 
 //database connection
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost:/test');
 
-//Schema and Model
-var mySchema = mongoose.Schema({
-	username: String,
-	password: String,
-	symbols: Array
-})
+			//////////////////////////////
+			//////////////////////////////
+			//    DB NAME    : myusers  //
+			//////////////////////////////
+			//////////////////////////////
 
-var UserModel = mongoose.model('users', mySchema);
+
 
 // GET HOME PAGE
+router.get('/', function(req,res,next){
+	res.render('index', {title: 'Express'});
+})
 
-// router.get('/', function(req,res,next)){
-// 	res.render('index', {title: 'Express'});
-// }
+
+//register a user
 
 router.post('/register', function(req,res){
-	console.log(req)
-	var username = req.query.username;
-	var password = req.query.password;
-	// var firstname = req.body.firstname;
-	// var lastname = req.body.lastname;
+	var username = req.body.username;
+	var password = req.body.password;
+	var firstname = req.body.username;
+	var lastname = req.body.lastname;
+	var email = req.body.email;		//must be in actual email form
 
-	var newuser = new UserModel();
+	var newuser = new User();
 	newuser.username = username;
 	newuser.password = password;
-	newuser.symbols = [];
-	// newuser.firstname = firstname;
-	// newuser.lastname = lastname;
+	newuser.symbols = [];		//init empty array
+	newuser.firstname = firstname;
+	newuser.lastname = lastname;
+	newuser.email = email;
 
 
-	console.log(username + ' ' + password)
 	//saving the user to the database
 	newuser.save(function(err, savedUser){
 		if(err){
 			//to deal with the asynchronous nature of the function
 			console.log(err);
 			return res.status(500).send();
+		}else if(savedUser.email){
+			//if the user enters an incorrect email
+			return res.status(500).send();
 		}else{
-			return res.send(newuser);
+			return res.status(200).send(newuser);
 		}
 	})
 })
+
+
+//login
+
+router.post('/login', function(req,res){
+	var username = req.body.username;
+	var password = req.body.password;
+
+	User.findOne({username: username}, function(err, user){
+		if(err){
+			console.log(err);
+			return res.status(500).send();
+		}
+		if(!user){
+			return res.status(404).send();
+		}
+
+		//check if passwords are the same
+		user.comparePassword(password, function(err, isMatch){
+			if(isMatch && isMatch == true){
+				//if user is found!
+				//sets logged in user to the user of the session so it can be verified in /dashboard
+				req.session.user = user;
+				return res.status(200).send();
+
+			}else{
+				return res.status(401).send();
+			}
+		})
+
+	})
+})
+
+
+
+//start a session
+router.get('/dashboard', function(req,res){
+	
+	if(!req.session.user){
+		return res.status(401).send();
+	}
+
+	return res.status(200).send("Welcome!");
+})
+
+
+//destroy a session
+router.get('/logout', function(req,res){
+	req.session.destroy();
+	return res.status(200).send();
+})
+
+
 
 /////////////////////////////////////////////////////////////////////
 // will update based on user id ==> updated data goes as json BODY //
@@ -56,7 +113,7 @@ router.post('/register', function(req,res){
 router.put('/update/:id', function(req,res){
 	var id = req.params.id;
 
-	UserModel.findOne({_id: id}, function(err, foundObject){
+	User.findOne({_id: id}, function(err, foundObject){
 		if(err){
 			console.log(err);
 			res.status(500).send();
@@ -64,13 +121,10 @@ router.put('/update/:id', function(req,res){
 			if(!foundObject){
 				res.status(404).send();
 			}else{
+				//UTILIZED FOR UPDATING THE SYMBOLS A USER IS LINKED TO
 				if(req.body.symbol){
 					//console.log(req.body.symbol);
 					foundObject.symbols.push(req.body.symbol);
-				}
-
-				if(req.body.username){
-					foundObject.username = req.body.username;
 				}
 
 				foundObject.save(function(err, updatedObject){
@@ -87,39 +141,7 @@ router.put('/update/:id', function(req,res){
 
 })
 
-/////////////////////////////////////////////////
-//will give a return of all the users in the DB//
 
-router.get('/check',function(req,res){
-	var logvalue = req.headers['log'];
-	if(logvalue && logvalue == 'info'){
-		conosle.log("request received for /check");
-	}
-
-	var select = req.query.select;
-
-	UserModel.find({}, function(err, foundData){
-		if(err){
-			console.log(err);
-			res.status(500).send();
-		}else{
-			var responseObject;
-			if(foundData.length == 0){
-				responseObject = undefined;
-				if(select && select == 'count'){
-					responseObject = {count: 0};
-				}
-				res.status(404).send(responseObject);
-			}else{
-				var responseObject = foundData;
-				if(select && select == 'count'){
-					responseObject = {count: foundData.length};
-				}
-			}
-			res.send(responseObject);
-		}
-	})
-})
 
 //////////////////////////////
 // delete a user in the DB  //

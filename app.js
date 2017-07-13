@@ -5,7 +5,7 @@ var config = require('./config.json');
 var app = express();
 var alphavantageRoute = require('./routes/alphavantage');
 var dbRoute = require('./routes/index');
-
+var session = require('express-session');
 
 
 
@@ -21,7 +21,7 @@ app.use(express.static(__dirname + '/public'));
 
 // Parse JSON body and store result in req.body
 app.use(bodyParser.json());
-
+app.use(session({secret: "akjkj3lk2j3lkjaf33", resave: false, saveUninitialized: true}));
 app.use(function (req, res, next){ //configure for cross origin headers
 	console.log("URL requested : " + req.url);
 
