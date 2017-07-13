@@ -2,9 +2,11 @@ var url = require('url');
 var express = require('express');
 var bodyParser = require('body-parser');
 var config = require('./config.json');
-// var cors = require('cors');
-
 var app = express();
+var alphavantageRoute = require('./routes/alphavantage');
+var dbRoute = require('./routes/index');
+
+
 
 
 //set view engine to ejs
@@ -37,7 +39,12 @@ app.listen(config.port, function() {
 
 
 //routing
-var alphavantageRoute = require('./routes/alphavantage');
 app.use('/sector', alphavantageRoute.getSectorData);
 app.use('/historical', alphavantageRoute.getHistoricalData);
 app.use('/current', alphavantageRoute.getCurrentData);
+
+
+// app.post('/register', dbRoute);	//register user
+// app.get('/checkdb', dbRoute);		//check for user info
+// app.put('/update', dbRoute);
+app.use('/mongo', dbRoute);
