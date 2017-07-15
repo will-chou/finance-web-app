@@ -26,16 +26,16 @@ router.get('/', function(req,res,next){
 router.post('/register', function(req,res){
 	var username = req.body.username;
 	var password = req.body.password;
-	var firstname = req.body.username;
-	var lastname = req.body.lastname;
+	// var firstname = req.body.firstname;
+	// var lastname = req.body.lastname;
 	var email = req.body.email;		//must be in actual email form
 
 	var newuser = new User();
 	newuser.username = username;
 	newuser.password = password;
 	newuser.symbols = [];		//init empty array
-	newuser.firstname = firstname;
-	newuser.lastname = lastname;
+	// newuser.firstname = firstname;
+	// newuser.lastname = lastname;
 	newuser.email = email;
 
 
@@ -44,9 +44,6 @@ router.post('/register', function(req,res){
 		if(err){
 			//to deal with the asynchronous nature of the function
 			console.log(err);
-			return res.status(500).send();
-		}else if(savedUser.email){
-			//if the user enters an incorrect email
 			return res.status(500).send();
 		}else{
 			return res.status(200).send(newuser);
@@ -58,6 +55,7 @@ router.post('/register', function(req,res){
 //login
 
 router.post('/login', function(req,res){
+	console.log("enter login");
 	var username = req.body.username;
 	var password = req.body.password;
 
@@ -77,7 +75,6 @@ router.post('/login', function(req,res){
 				//sets logged in user to the user of the session so it can be verified in /dashboard
 				req.session.user = user;
 				return res.status(200).send();
-
 			}else{
 				return res.status(401).send();
 			}

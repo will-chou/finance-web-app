@@ -1,5 +1,5 @@
-function fetchDataSector(){
 
+function fetchDataSector(){
 
   var urlSector = window.location.href + "sector"
   console.log(urlSector);
