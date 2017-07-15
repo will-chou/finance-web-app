@@ -18,13 +18,34 @@ $("#loginButton").on('click', function(){
             //		DO SOME SHIT AFTER login //
             ///////////////////////////////////
 
+            // ENTER DASHBOARD --->
+
+        	$.ajax({
+		        url : "/mongo/dashboard",
+		        type: "POST",
+		        contentType: "application/json; charset=utf-8",
+		        success    : function(results){
+		            console.log("success", results);
+
+		            ///////////////////////////////////
+		            //		DO SOME SHIT AFTER login //
+		            ///////////////////////////////////
+
+		            
+		            // TO DO ::
+		            //1. display delta (change) from stock price from day start of ALL stocks on users watchlist. 
+
+		        },
+		        error: function(err){
+		        	console.log("error", err);
+		        }
+		    });
         },
         error: function(err){
         	console.log("error", err);
         }
     });
 
-    console.log("finish");
 
 })
 
