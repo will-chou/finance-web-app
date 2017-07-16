@@ -48,52 +48,6 @@ function fetchDataHistorical(){
 
 
 
-/*
-function displayGraph(keyword){
-  var urlIntraDay = "http://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol="+ keyword+"&interval=5min&outputsize=full&apikey=TH8FUMSI7QU19B39"
-  var urlIntraDay30 = "http://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol="+ keyword+"&interval=30min&outputsize=full&apikey=TH8FUMSI7QU19B39"
-  var urlDaily = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=" + keyword +"&apikey=TH8FUMSI7QU19B39"
-
-  $.ajax({
-      url: urlIntraDay,
-      dataType: 'json',
-      success: function(results){
-        console.log(results);
-
-        //convert JSON result into a usable JSON format
-
-        results = results['Time Series (5min)'];
-
-        var newJSONarray = {};
-        //loop through JSON object
-        var size = Object.keys(results).length;
-        for(var i = 0; i < 10; i++){
-          var newJSONobj = {};
-
-          var JSONname = Object.keys(results)[i];
-          console.log(JSONname);
-          var JSONobj = results[JSONname];
-          var date = new Date(JSONname);
-
-          newJSONobj['date'] = date;
-          newJSONobj['value'] = JSONobj['4. close'];
-
-          newJSONarray[i] = newJSONobj;
-        }
-
-        console.log(newJSONarray);
-        attemptDisplayGraph(newJSONarray);
-        displayDailyGraph(newJSONarray);
-
-      },
-      error: function(){
-          console.log("error");
-      }
-  });
-}
-
-*/
-
 
 function fetchDataCurrent(){
   var keyword = document.getElementsByName('keyword')[0].value;
@@ -138,6 +92,10 @@ function fetchDataCurrent(){
 
         mountpoint.appendChild(infoBox);
 
+
+
+
+        /*
         //displayGraph(keyword);
         //ADD SYMBOL TO USER'S SHIT
         $.ajax({
@@ -150,6 +108,9 @@ function fetchDataCurrent(){
               console.log("error");
             }
         });
+
+
+        
 
       },
       error: function(){
@@ -170,7 +131,7 @@ window.onload =
     document.getElementById('submit').addEventListener('click',
       function(){
         console.log("fetchdata about to be called");
-        fetchDataCurrent();
+        //fetchDataCurrent();
       });
     document.getElementById('hist-submit').addEventListener('click',
       function(){
