@@ -91,8 +91,10 @@ router.get('/dashboard', function(req,res){
 	if(!req.session.user){
 		return res.status(401).send();
 	}
+	var user = req.session.user;
 
-	return res.status(200).send("Welcome!");
+	//return the user's symbol array
+	return res.status(200).send(user.symbols);
 })
 
 
@@ -104,29 +106,29 @@ router.get('/logout', function(req,res){
 
 
 
-/////////////////////////////////////////////////////////////////////
-// will update based on user id ==> updated data goes as json BODY //
+////////////////////////////////////////////////////////////////////////////////////////////
+// will update based on session.user (express-session) ==> updated data goes as json BODY //
 
-router.put('/update/:id', function(req,res){
-	var id = req.params.id;
+router.put('/update/:symbol', function(req,res){
+	var user = req.session.user;
 
-	User.findOne({_id: id}, function(err, foundObject){
+
+	//user the user ID to find the user in our DB and then append the symbol to their symbol array
+	User.findOne({_id: user._id}, function(err, foundObject){
 		if(err){
-			console.log(err);
 			res.status(500).send();
 		}else{
 			if(!foundObject){
 				res.status(404).send();
 			}else{
 				//UTILIZED FOR UPDATING THE SYMBOLS A USER IS LINKED TO
-				if(req.body.symbol){
+				if(req.params.symbol){
 					//console.log(req.body.symbol);
-					foundObject.symbols.push(req.body.symbol);
+					foundObject.symbols.push(req.params.symbol);
 				}
 
 				foundObject.save(function(err, updatedObject){
 					if(err){
-						console.log(err);
 						res.status(500).send();
 					}else{
 						res.send(updatedObject);
@@ -135,7 +137,6 @@ router.put('/update/:id', function(req,res){
 			}
 		}
 	})
-
 })
 
 
@@ -147,7 +148,6 @@ router.delete('/delete/:id', function(req,res){
 	var id = req.params.id;
 	UserModel.findOneAndRemove({_id: id}, function(err){
 		if(err){
-			console.log(err);
 			return res.status(500).send();
 		}
 
