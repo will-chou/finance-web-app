@@ -6,35 +6,75 @@
   </head>
 
   <body>
-    <div id = "navbar"></div>
+    <nav>
+      <ul>
+        <li><a href="#" id="myBtn">Login</a></li>    <!-- Trigger/Open The Modal -->
 
-    <div class = "page">
-      <h1>Login</h1>
-      <input type="text" id = "loginUsername" placeholder="username">
-      <input type="text" id = "loginPassword" placeholder="password">
-      <button id = "loginButton">Submit</button>
+        <li><a href="#" id = "registerBtn">Register</a></li>
+        <li class="active"><a href="#">About</a></li>
+        <li><a href="#">Home</a></li>
+      </ul>
+    </nav>
 
-      <h1>Register</h1>
-      <input type="text" id = "registerUsername" placeholder="username">
-      <input type="text" id = "registerPassword" placeholder="password">
-      <input type="text" id = "registerEmail" placeholder="email">
-      <button id = "registerButton">Submit</button>
-     
+
+    <!-- The Login Modal -->
+    <div id="myModal" class="modal">
+
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h1>LOGIN</h1>
+        <input type="text" id = "loginUsername" placeholder="username">
+        <input type="text" id = "loginPassword" placeholder="password">
+        <button id = "loginButton">Submit</button>
+        
+        <p style="margin-top: 50px">pst! example login:</p>
+        <p>username: test</p>
+        <p>password: 1234</p>
+
+      </div>
+
+    </div>
+
+    <!-- The Register Modal -->
+    <div id="registerModal" class="modal">
+
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="closeReg">&times;</span>
+        <h1>REGISTER</h1>
+        <input type="text" id = "registerUsername" placeholder="username*">
+        <input type="text" id = "registerPassword" placeholder="password*">
+        <input type="text" id = "registerEmail" placeholder="email*">
+        <button id = "registerButton">Submit</button>
+
+        <p style="margin-top: 50px">if you dont want to register, test it out at:</p>
+        <p>username: test</p>
+        <p>password: 1234</p>
+      </div>
+
     </div>
 
 
-    
 
 
 
-
-    <div>
-      <div id="searchbar" >
-              <div class="form-group">
-                  <input type="text" name = "keyword" placeholder = "Symbol" required>
-                  <button id="submit"> ADD TO WATCHLIST </button> 
-              </div>
+    <div id = "left-box">
+      <div id="searchbar">
+        <h1>YOUR WATCHLIST</h1>        
+        <div class="form-group">
+            <input type="text" name = "keyword" placeholder = "Symbol" required>
+            <button id="submit"> ADD</button> 
+        </div>
       </div>
+
+      <div id = "mountpoint">
+        
+      </div>
+
+    </div>
+
+
 
 
       <div class="form-group">
@@ -48,14 +88,8 @@
           <button id="sect-submit" placeholder = "SECTOR">SECTOR</button> 
       </div>
 
-      <div id = "mountpoint">
-        
-      </div>
 
 
-
-
-    </div>
   </body>
     <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 

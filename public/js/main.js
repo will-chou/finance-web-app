@@ -51,11 +51,9 @@ function fetchDataHistorical(){
 
 function fetchDataCurrent(){
   var keyword = document.getElementsByName('keyword')[0].value;
-  console.log(keyword);
-  var url = window.location.href + "current?symbol=" + keyword;
-  console.log(url);
+
   $.ajax({
-      url: url,
+      url:   "/current?symbol=" + keyword,
       dataType: 'json',
       success: function(results){
 
@@ -95,7 +93,7 @@ function fetchDataCurrent(){
 
 
 
-        /*
+        
         //displayGraph(keyword);
         //ADD SYMBOL TO USER'S SHIT
         $.ajax({
@@ -128,10 +126,20 @@ window.onload =
 
   function(){
 
+
+
+
+    /////////////
+    // SUMBITS //
+    /////////////
+
     document.getElementById('submit').addEventListener('click',
       function(){
         console.log("fetchdata about to be called");
-        //fetchDataCurrent();
+
+        fetchDataCurrent();
+
+        //close the modal
       });
     document.getElementById('hist-submit').addEventListener('click',
       function(){
@@ -143,6 +151,8 @@ window.onload =
         console.log("sector data gonna be grabbed");
         fetchDataSector();
       });
+
+
   };
 
 
