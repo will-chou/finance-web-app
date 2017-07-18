@@ -99,11 +99,18 @@ router.post('/login', function(req,res){
 
 
 //start a session
-router.get('/dashboard', function(req,res){
+router.get('/home', function(req,res){
 	
 	if(!req.session.user){
+		res.redirect('/');
 		return res.status(401).send();
 	}
+	res.render('home');
+	
+})
+
+//load user saved symbols
+router.get('/dashboard', function(req, res) {
 	var user = req.session.user;
 
 	//return the user's symbol array
@@ -125,6 +132,9 @@ router.get('/logout', function(req,res){
 router.put('/update/:symbol', function(req,res){
 	var user = req.session.user;
 
+	if(user == null) {
+		return res.status(404).send();
+	}
 
 	//user the user ID to find the user in our DB and then append the symbol to their symbol array
 	User.findOne({_id: user._id}, function(err, foundObject){
