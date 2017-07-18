@@ -1,10 +1,7 @@
 
 function fetchDataSector(){
-
-  var urlSector = window.location.href + "sector"
-  console.log(urlSector);
   $.ajax({
-      url: urlSector,
+      url: "/sector",
       dataType: 'json',
       success: function(results){
           console.log(results);
@@ -15,6 +12,20 @@ function fetchDataSector(){
 
           //display results
 
+          var realTime = results["Rank A: Real-Time Performance"];
+          var cd = realTime["Consumer Discretionary"];
+          var cs = realTime["Consumer Staples"]
+          var e = realTime["Energy"]
+          var f = realTime["Financials"]
+          var hc = realTime["Health Care"]
+          var i = realTime["Industrials"]
+          var it = realTime["Information Technology"]
+          var me = realTime["Materials"]
+          var re = realTime["Real Estate"]
+          var ts = realTime["Telecommunication Services"]
+          var u = realTime["Utilities"]
+
+          
       },
       error: function(){
           console.log("error");
@@ -78,12 +89,34 @@ function fetchDataCurrent(){
         var textPriceChange = document.createElement('p');
         var textPriceChangePercent = document.createElement('p');
 
-        textName.innerHTML = "Name: " + StockName;
-        textPrice.innerHTML = "Current Price: $" + StockPrice;
-        textPriceChange.innerHTML = "Price Change Since Day Start: $" + StockPriceChange;
-        textPriceChangePercent.innerHTML = "Price Change Percent: " + StockPriceChangePercent;
+        infoBox.className = "infoBox";
+        textName.className = "stockName";
+        textPrice.className = "stockInfo";
+        textPriceChange.className = "stockInfo";
+        textPriceChangePercent.className = "stockInfo";
+        
+        var stockColor;
+        //change color of text
+        if(StockPriceChange < 0){
+          stockColor = "#ff6868";
+
+        }else{
+          stockColor = "#61ce81";
+
+        }
+
+        textName.innerHTML = StockName;
+        textPrice.innerHTML = "Current : $" + Math.round(StockPrice*100)/100;
+        textPriceChange.innerHTML = "Delta : $" + "<span style=color:"+stockColor+">"+Math.round(StockPriceChange*100)/100 + "</span>";
+        textPriceChangePercent.innerHTML = "Percent Change : " + "<span style=color:"+stockColor+">"+StockPriceChangePercent+"</span>";
+
+
+        var bar = document.createElement('div');
+        bar.className = "bar";
+
 
         infoBox.appendChild(textName);
+        infoBox.appendChild(bar);
         infoBox.appendChild(textPrice);
         infoBox.appendChild(textPriceChange);
         infoBox.appendChild(textPriceChangePercent);
@@ -141,16 +174,14 @@ window.onload =
 
         //close the modal
       });
-    document.getElementById('hist-submit').addEventListener('click',
-      function(){
-        console.log("historical data gonna be grabbed");
-        fetchDataHistorical();
-      });
-    document.getElementById('sect-submit').addEventListener('click',
-      function(){
-        console.log("sector data gonna be grabbed");
-        fetchDataSector();
-      });
+    // document.getElementById('hist-submit').addEventListener('click',
+    //   function(){
+    //     console.log("historical data gonna be grabbed");
+    //     fetchDataHistorical();
+    //   });
+
+    fetchDataSector();
+
 
 
   };

@@ -1,6 +1,6 @@
 /* NAVBAR */
 nav {
-  margin: 25px;
+  margin: 25px 25px 35px 25px;
 }
  
 ul {
@@ -135,11 +135,19 @@ body{
 	font: 18px/1 Helvetica, Verdana, sans-serif;
 
 }
+/****************************************
+				LEFT BOX
+****************************************/
+
+#left-box{
+	width: 60%;
+	float: left;
+	margin: 0 0 0 0;
+	position: relative;
+}
 
 
-
-
-#searchbar{
+#searchbar, #searchbar-right{
 	width: initial;
 	overflow: hidden;
 	display: flex;
@@ -149,6 +157,7 @@ body{
 
 #searchbar h1{
 	float: left;
+	margin-left: 20px;
 }
 
 
@@ -175,15 +184,57 @@ body{
 	padding: 0 0 0 10px;
 }
 
-#left-box{
-	width: 70%;
-	float: left;
-	margin: 0 0 0 0;
-	position: relative;
-}
+
+/*MOUNTPOINT STUFF*/
+
 #mountpoint{
 	height: auto;
     position: relative;
 	font: 18px/1 Helvetica, Verdana, sans-serif;
-	margin: 0 0 0 20px;
+	margin: 0 0 0 30px;
+}
+
+.infoBox{
+	margin-bottom: 30px;
+	height: auto;
+	width: 350px;
+	border: 3px solid black;
+	overflow:hidden;
+}
+
+.infoBox .stockName{
+	font: 18px/1 Helvetica, Verdana, sans-serif;
+	font-weight: bold;
+	margin: 20px 20px 10px 20px;
+}
+
+.infoBox .bar{
+	background-color: black;
+	width: 100px;
+	height: 5px;
+	margin: 0 0 0 19px;
+}
+
+.infoBox .stockInfo{
+	font: 14px/1 Helvetica, Verdana, sans-serif;
+	min-width: 100px;
+	display: inline-block;
+	margin: 20px 20px 20px 20px;
+
+}
+
+
+/****************************************
+				RIGHT BOX
+****************************************/
+
+#right-box{
+	position: relative;
+	float: left;
+	display: inline-block;
+	width: 35%;
+}
+
+#searchbar-right{
+	text-align: right;
 }

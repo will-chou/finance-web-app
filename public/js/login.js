@@ -94,24 +94,37 @@ $("#loginButton").on('click', function(){
 						        var StockPriceChange = StockObject['08. Price Change'];
 						        var StockPriceChangePercent = StockObject['09. Price Change Percentage'];
 
-
-								console.log(StockPrice);
-								console.log(StockPriceChange);
-								console.log(StockPriceChangePercent);
-
-
 								var infoBox = document.createElement('div');
 								var textName = document.createElement('p');
 								var textPrice = document.createElement('p');
 								var textPriceChange = document.createElement('p');
 								var textPriceChangePercent = document.createElement('p');
 
-								textName.innerHTML = "Name: " + StockName;
-								textPrice.innerHTML = "Current Price: $" + StockPrice;
-								textPriceChange.innerHTML = "Price Change Since Day Start: $" + StockPriceChange;
-								textPriceChangePercent.innerHTML = "Price Change Percent: " + StockPriceChangePercent;
+								infoBox.className = "infoBox";
+								textName.className = "stockName";
+								textPrice.className = "stockInfo";
+								textPriceChange.className = "stockInfo";
+								textPriceChangePercent.className = "stockInfo";
+								
+								var stockColor;
+						        //change color of text
+						        if(StockPriceChange < 0){
+						        	stockColor = "#ff6868";
+
+						        }else{
+						        	stockColor = "#61ce81";
+						        }
+
+								textName.innerHTML = StockName;
+								textPrice.innerHTML = "Current : $" + Math.round(StockPrice*100)/100;
+								textPriceChange.innerHTML = "Delta : $" + "<span style=color:"+stockColor+">"+Math.round(StockPriceChange*100)/100 + "</span>";
+								textPriceChangePercent.innerHTML = "Percent Change : " + "<span style=color:"+stockColor+">"+StockPriceChangePercent+"</span>";
+
+								var bar = document.createElement('div');
+        						bar.className = "bar";
 
 								infoBox.appendChild(textName);
+								infoBox.appendChild(bar);
 								infoBox.appendChild(textPrice);
 								infoBox.appendChild(textPriceChange);
 								infoBox.appendChild(textPriceChangePercent);
