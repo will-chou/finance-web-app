@@ -64,6 +64,7 @@ $("#loginButton").on('click', function(){
             //redirect to homepage
             window.location.href = 'mongo/home';
 
+
         },
         error: function(err){
         	console.log("error", err);
