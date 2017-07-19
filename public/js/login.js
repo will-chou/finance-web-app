@@ -59,6 +59,91 @@ $("#loginButton").on('click', function(){
 
             // ENTER DASHBOARD --->
 
+<<<<<<< HEAD
+        	$.ajax({
+		        url : "/mongo/dashboard",
+		        type: "GET",
+		        contentType: "application/json; charset=utf-8",
+		        success    : function(results){
+		            console.log("success", results);
+
+		            ///////////////////////////////////
+		            //	DO SOME SHIT AFTER login 	 //
+		            ///////////////////////////////////
+
+
+		            // TO DO ::
+		            //1. display delta (change) from stock price from day start of ALL stocks on users watchlist. 
+
+                 	var mountpoint = document.getElementById('mountpoint');
+
+		          	console.log(results);
+
+		          	//for each SYMBOL in our array, find the data.
+		          	results.forEach(function(symbol){
+		          		$.ajax({
+		          			url: "/current?symbol=" + symbol,
+		          			type: "GET",
+		          			dataType: 'json',
+		          			contentType: "application/json; charset=utf-8",
+		          			success: function(results){
+		          				console.log(results);
+				          		var StockObject = results['Realtime Global Securities Quote'];
+						        console.log(StockObject);
+						        var StockName = StockObject['01. Symbol'];
+						        var StockPrice = StockObject['03. Latest Price'];
+						        var StockPriceChange = StockObject['08. Price Change'];
+						        var StockPriceChangePercent = StockObject['09. Price Change Percentage'];
+
+								var infoBox = document.createElement('div');
+								var textName = document.createElement('p');
+								var textPrice = document.createElement('p');
+								var textPriceChange = document.createElement('p');
+								var textPriceChangePercent = document.createElement('p');
+
+								infoBox.className = "infoBox";
+								textName.className = "stockName";
+								textPrice.className = "stockInfo";
+								textPriceChange.className = "stockInfo";
+								textPriceChangePercent.className = "stockInfo";
+								
+								var stockColor;
+						        //change color of text
+						        if(StockPriceChange < 0){
+						        	stockColor = "#ff6868";
+
+						        }else{
+						        	stockColor = "#61ce81";
+						        }
+
+								textName.innerHTML = StockName;
+								textPrice.innerHTML = "Current : $" + Math.round(StockPrice*100)/100;
+								textPriceChange.innerHTML = "Delta : $" + "<span style=color:"+stockColor+">"+Math.round(StockPriceChange*100)/100 + "</span>";
+								textPriceChangePercent.innerHTML = "Percent Change : " + "<span style=color:"+stockColor+">"+StockPriceChangePercent+"</span>";
+
+								var bar = document.createElement('div');
+        						bar.className = "bar";
+
+								infoBox.appendChild(textName);
+								infoBox.appendChild(bar);
+								infoBox.appendChild(textPrice);
+								infoBox.appendChild(textPriceChange);
+								infoBox.appendChild(textPriceChangePercent);
+
+								mountpoint.appendChild(infoBox);
+
+		          			}
+		          		})
+		          	})
+	
+
+
+		        },
+		        error: function(err){
+		        	console.log("error", err);
+		        }
+		    });
+=======
             window.location.href = 'mongo/home';
 
             //$(window).on("load", function() {
@@ -137,6 +222,7 @@ $("#loginButton").on('click', function(){
 			    // });
 			
 			//});
+>>>>>>> 3fc6f21bf3c2f3769321a111668ac0a783039fd7
 
 
 

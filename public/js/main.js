@@ -252,9 +252,6 @@ function fetchDataCurrent(){
           mountpoint.appendChild(infoBox);
         }
 
-
-        
-
       },
       error: function(){
         console.log("error");
