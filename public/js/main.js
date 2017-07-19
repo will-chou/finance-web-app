@@ -1,4 +1,5 @@
 
+
 function fetchDataSector(){
   $.ajax({
       url: "/sector",
@@ -10,22 +11,75 @@ function fetchDataSector(){
           // TO DO //
           ///////////
 
-          //display results
+          //define mountpoint
+          var mountpoint = document.getElementById('sector-mount')
 
+          //analyze results
           var realTime = results["Rank A: Real-Time Performance"];
-          var cd = realTime["Consumer Discretionary"];
-          var cs = realTime["Consumer Staples"]
-          var e = realTime["Energy"]
-          var f = realTime["Financials"]
-          var hc = realTime["Health Care"]
-          var i = realTime["Industrials"]
-          var it = realTime["Information Technology"]
-          var me = realTime["Materials"]
-          var re = realTime["Real Estate"]
-          var ts = realTime["Telecommunication Services"]
-          var u = realTime["Utilities"]
 
-          
+          console.log(realTime);
+
+
+
+          // NOTE! a byproduct of doing this, is that it sorts the values an keys array
+          // from greatest to largest.  Interesting functionality.
+          var keys = Object.keys(realTime);
+          var values = Object.values(realTime);
+
+          // var cd = realTime["Consumer Discretionary"];
+          // var cs = realTime["Consumer Staples"]
+          // var e = realTime["Energy"]
+          // var f = realTime["Financials"]
+          // var hc = realTime["Health Care"]
+          // var i = realTime["Industrials"]
+          // var it = realTime["Information Technology"]
+          // var me = realTime["Materials"]
+          // var re = realTime["Real Estate"]
+          // var ts = realTime["Telecommunication Services"]
+          // var u = realTime["Utilities"]
+
+
+          var length = keys.length;
+          //loop through and build the front-end display
+          for(var i = 0; i < length; i++){
+            var sectorBox = document.createElement('div');
+            var sectorName = document.createElement('p');
+            var sectorDeltaContainer = document.createElement('div');
+            var sectorDelta = document.createElement('p');
+
+            //add styling
+            sectorBox.className = "sectorBox";
+            sectorName.className = "sectorName";
+            sectorDelta.className = "sectorText";
+            sectorDeltaContainer.className = "sectorTextBox";
+
+            //add the colorful ring
+            if(parseFloat(values[i]) < 0){
+              sectorDeltaContainer.style.border = "3px solid #ff6868";
+            }else{
+              sectorDeltaContainer.style.border = "3px solid #61ce81";
+            }
+
+
+            sectorName.innerHTML = keys[i];
+            sectorDelta.innerHTML = values[i];
+
+            //append it all together
+            sectorDeltaContainer.appendChild(sectorDelta);
+            sectorBox.appendChild(sectorName);
+            sectorBox.appendChild(sectorDeltaContainer);
+            //append to mountpoint
+            mountpoint.appendChild(sectorBox);
+          }
+
+
+
+
+
+
+
+
+
       },
       error: function(){
           console.log("error");
