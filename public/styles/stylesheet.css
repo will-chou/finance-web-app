@@ -1,11 +1,19 @@
 /* NAVBAR */
 nav {
-  margin: 25px 25px 35px 25px;
+  position: fixed;
+    width: 100%;
+    margin: 12px 0 0 0;
 }
- 
+
+.fake-nav{
+	height: 55px;
+	width: 100px;
+}
+
 ul {
   overflow: auto;
   list-style-type: none;
+  margin-right: 25px;
 }
  
 li {
@@ -69,7 +77,7 @@ li.active a {
     margin: 15% auto; /* 15% from the top and centered */
     padding: 20px;
     border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
+    width: 50%; /* Could be more or less, depending on screen size */
 }
 
 .modal-content p{
@@ -125,15 +133,42 @@ button:focus, button:hover{
 }
 
 
+/****************************************       LANDING PAGE   ***************************************
+*/
+
+.landing{
+	margin: 0 40px 0 40px;
+	position: relative;
+}
+
+#intro{
+	min-height: 100vh;
+	position: relative;
+}
+
+#about{
+	min-height: 300px;
+}
+
+.header-bar{
+	width: 250px;
+	height: 10px;
+	background-color: black;
+}
+
+#about h1{
+	margin-bottom: 10px;
+	font: 40px Helvetica, Verdana, sans-serif;
+	font-weight: bold;
+}
 
 
 
-/****************************************************************************/
-/*******************************    START   *********************************/
-/****************************************************************************/
+
 body{
+	margin: 0;
 	font: 18px/1 Helvetica, Verdana, sans-serif;
-
+	height: 100%;
 }
 /****************************************
 				LEFT BOX
@@ -145,7 +180,9 @@ body{
 	margin: 0 0 0 0;
 	position: relative;
 }
-
+#searchbar{
+	margin-bottom: 40px;
+}
 
 #searchbar, #searchbar-right{
 	width: initial;
@@ -237,6 +274,7 @@ body{
 
 #searchbar-right{
 	text-align: right;
+	padding-right: 40px;
 }
 
 
@@ -278,6 +316,11 @@ body{
     margin: 0px;
 
 }
+
+
+
+
+
 
 
 
