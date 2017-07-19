@@ -30,25 +30,38 @@ router.post('/register', function(req,res){
 	// var lastname = req.body.lastname;
 	var email = req.body.email;		//must be in actual email form
 
-	var newuser = new User();
-	newuser.username = username;
-	newuser.password = password;
-	newuser.symbols = [];		//init empty array
-	// newuser.firstname = firstname;
-	// newuser.lastname = lastname;
-	newuser.email = email;
-
-
-	//saving the user to the database
-	newuser.save(function(err, savedUser){
+	User.findOne({username: username}, function(err, user){
 		if(err){
-			//to deal with the asynchronous nature of the function
 			console.log(err);
 			return res.status(500).send();
-		}else{
-			return res.status(200).send(newuser);
+		}
+		if(user){
+			console.log("Username taken");
+			return res.send("Username taken");
+		}
+		else {
+			var newuser = new User();
+			newuser.username = username;
+			newuser.password = password;
+			newuser.symbols = [];		//init empty array
+			// newuser.firstname = firstname;
+			// newuser.lastname = lastname;
+			newuser.email = email;
+
+
+			//saving the user to the database
+			newuser.save(function(err, savedUser){
+				if(err){
+					//to deal with the asynchronous nature of the function
+					console.log(err);
+					return res.status(500).send();
+				}else{
+					return res.status(200).send(newuser);
+				}
+			})
 		}
 	})
+
 })
 
 
@@ -86,11 +99,18 @@ router.post('/login', function(req,res){
 
 
 //start a session
-router.get('/dashboard', function(req,res){
+router.get('/home', function(req,res){
 	
 	if(!req.session.user){
+		res.redirect('/');
 		return res.status(401).send();
 	}
+	res.render('home');
+	
+})
+
+//load user saved symbols
+router.get('/dashboard', function(req, res) {
 	var user = req.session.user;
 
 	//return the user's symbol array
@@ -112,6 +132,9 @@ router.get('/logout', function(req,res){
 router.put('/update/:symbol', function(req,res){
 	var user = req.session.user;
 
+	if(user == null) {
+		return res.status(404).send();
+	}
 
 	//user the user ID to find the user in our DB and then append the symbol to their symbol array
 	User.findOne({_id: user._id}, function(err, foundObject){
@@ -124,16 +147,25 @@ router.put('/update/:symbol', function(req,res){
 				//UTILIZED FOR UPDATING THE SYMBOLS A USER IS LINKED TO
 				if(req.params.symbol){
 					//console.log(req.body.symbol);
-					foundObject.symbols.push(req.params.symbol);
-				}
+					if(foundObject.symbols.indexOf(req.params.symbol) == -1) {
+						foundObject.symbols.push(req.params.symbol);
 
-				foundObject.save(function(err, updatedObject){
-					if(err){
-						res.status(500).send();
-					}else{
-						res.send(updatedObject);
+						foundObject.save(function(err, updatedObject){
+							if(err){
+								res.status(500).send();
+							}else{
+								res.send(updatedObject);
+							}
+						})
 					}
-				})
+					else {
+						console.log("Symbol " + req.params.symbol + " already in user " + user.username + "'s symbols");
+						res.send("Symbol already saved");
+					}
+				}
+				else {
+					res.send("Null symbol");
+				}
 			}
 		}
 	})

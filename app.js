@@ -47,4 +47,7 @@ app.use('/current', alphavantageRoute.getCurrentData);
 // app.post('/register', dbRoute);	//register user
 // app.get('/checkdb', dbRoute);		//check for user info
 // app.put('/update', dbRoute);
+// app.get('/mongo/dashboard', function(req, res, next) {
+// 	res.render('dashboard');
+// });
 app.use('/mongo', dbRoute);
