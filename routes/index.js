@@ -117,6 +117,37 @@ router.get('/dashboard', function(req, res) {
 	return res.status(200).send(user.symbols);
 })
 
+//delete user symbols by stockName
+router.post('/deleteSymbol', function(req, res) {
+	console.log("ROUTE DELETESYMBOL ENTERED");
+	var user = req.session.user;
+
+	console.log("In user " + user.username + "'s db");
+	User.findOne({username: user.username}, function(err, user) {
+		if(err) {
+			console.log("deleteSymbol error");
+			res.status(500).send();
+		}
+		if(!user) {
+			console.log("user not found");
+			res.status(404).send();
+		}
+
+		var symbolIndex = user.symbols.indexOf(req.body.stockName);
+		user.symbols.splice(symbolIndex, 1);
+
+		console.log("symbol deleted from db");
+		console.log(user.symbols);
+
+		user.save(function(err) {
+			if(err) {
+				console.log("error");
+			}
+		})
+
+		res.send("Success");
+	})
+})
 
 //destroy a session
 router.get('/logout', function(req,res){

@@ -194,12 +194,30 @@ body{
 	margin: 0 0 0 30px;
 }
 
+@-webkit-keyframes fadeIn {
+    from { opacity: 0; }
+      to { opacity: 1; }
+}  
+@keyframes fadeIn {
+    from { opacity: 0; }
+      to { opacity: 1; }
+}
+
 .infoBox{
 	margin-bottom: 30px;
 	height: auto;
 	width: 350px;
 	border: 3px solid black;
 	overflow:hidden;
+
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  -ms-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s;
 }
 
 .infoBox .stockName{
@@ -223,6 +241,20 @@ body{
 
 }
 
+.infoBox .delete{
+  color: #e6e6e6;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  padding: 0px 8px 0px 0px;
+}
+
+.infoBox .delete:hover,
+.delete:focus {
+    color: red;
+    text-decoration: none;
+    cursor: pointer;
+}
 
 /****************************************
 				RIGHT BOX
