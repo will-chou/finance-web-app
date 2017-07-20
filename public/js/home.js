@@ -34,79 +34,10 @@ window.onload = function() {
 
           console.log(results);
 
-          //for each SYMBOL in our array, find the data.
-          for(var i = 0; i < results.length; i++) {
-          //results.forEach(function(symbol){
-          	//setTimeout(function() {
-	          	var symbol = results[i];
+          var numStocks = results.length;
 
-				console.log("Symbol " + i + " is " + symbol);
-
-	            $.ajax({
-	              url: "/current?symbol=" + symbol,
-	              type: "GET",
-	              dataType: 'json',
-	              contentType: "application/json; charset=utf-8",
-	              async: false,
-	              success: function(results){
-	                console.log(results);
-	                var StockObject = results['Realtime Global Securities Quote'];
-	                console.log(StockObject);
-	                var StockName = StockObject['01. Symbol'];
-	                var StockPrice = StockObject['03. Latest Price'];
-	                var StockPriceChange = StockObject['08. Price Change'];
-	                var StockPriceChangePercent = StockObject['09. Price Change Percentage'];
-
-	                var infoBox = document.createElement('div');
-	                var textName = document.createElement('p');
-	                var textPrice = document.createElement('p');
-	                var textPriceChange = document.createElement('p');
-	                var textPriceChangePercent = document.createElement('p');
-	                var deleteButton = document.createElement('span');
-
-	                infoBox.className = "infoBox";
-	                textName.className = "stockName";
-	                textPrice.className = "stockInfo";
-	                textPriceChange.className = "stockInfo";
-	                textPriceChangePercent.className = "stockInfo";
-	                deleteButton.className = "delete";
-
-	                textName.id = i + "_name";
-	                infoBox.id = i + "_div";
-	                deleteButton.id = "" + i;
-	                console.log(StockName + " id is " + deleteButton.id);
-
-	                var stockColor;
-	              //change color of text
-	              if(StockPriceChange < 0){
-	                stockColor = "#ff6868";
-
-	              }else{
-	                stockColor = "#61ce81";
-	              }
-
-	              textName.innerHTML = StockName;
-	              textPrice.innerHTML = "Current : $" + Math.round(StockPrice*100)/100;
-	              textPriceChange.innerHTML = "Delta : $" + "<span style=color:"+stockColor+">"+Math.round(StockPriceChange*100)/100 + "</span>";
-	              textPriceChangePercent.innerHTML = "Percent Change : " + "<span style=color:"+stockColor+">"+StockPriceChangePercent+"</span>";
-	              deleteButton.innerHTML = "&times;";
-
-	              var bar = document.createElement('div');
-	              bar.className = "bar";
-
-	              infoBox.appendChild(deleteButton);
-	              infoBox.appendChild(textName);
-	              infoBox.appendChild(bar);
-	              infoBox.appendChild(textPrice);
-	              infoBox.appendChild(textPriceChange);
-	              infoBox.appendChild(textPriceChangePercent);
-
-	              mountpoint.appendChild(infoBox);
-
-	            }
-	          })
-          //}, 300*i);
-		}
+          //user helper function to load stock data onto page
+          loadStocks(numStocks, 0, results);
 
 
         },
@@ -115,37 +46,25 @@ window.onload = function() {
         }
       });
 
-   document.getElementById('submit').addEventListener('click',
-    function(){
-      console.log("fetchdata about to be called");
+ document.getElementById('submit').addEventListener('click',
+  function(){
+    console.log("fetchdata about to be called");
 
-      fetchDataCurrent();
+    fetchDataCurrent();
 
-    });
-   
-    fetchDataSector();
+  });
+ 
+  fetchDataSector();
 
-    setTimeout(function() {
-    	var numBoxes = $('div.infoBox').length;
-    	console.log("numBoxes is " + numBoxes);
-  //   	for(var i = 0; i < numBoxes; i++) {
-  //   		//setTimeout(function() {
-		// 		var deleteBtn = document.getElementById("" + i);
-		// 		console.log("deleteBtn id: " + deleteBtn.id);
+  setTimeout(function() {
+  	var numBoxes = $('div.infoBox').length;
+  	console.log("numBoxes is " + numBoxes);
 
-		// 		deleteBtn.onclick = function() {
-		// 			console.log("DELETE CLICKED " + deleteBtn.id);
-		// 			var infoBoxId = document.getElementById(deleteBtn.id + "_div");
-		// 			console.log("infoBoxId: " + infoBoxId.id);
-		// 			infoBoxId.style.display = "none";
-		// 		}
-		// 	//}, 100);
-		// }
 		var deleteId = 0;
 
 		loadClickEvents(numBoxes, deleteId);
 
-	}, 100);
+	}, 3000);
 }
 
 
@@ -298,7 +217,7 @@ function fetchDataCurrent(){
         $.ajax({
             url: "/mongo/update/" + keyword,
             type: "PUT",
-            async: false,
+            //async: false,
             success: function(updateResults){
               console.log("updateResults: " + updateResults);
               if(updateResults === "Symbol already saved") {
@@ -422,6 +341,82 @@ function loadClickEvents(numBoxes, deleteId) {
 	loadClickEvents(numBoxes, deleteId + 1);
 }
 
+//recursive function to load the stock data
+function loadStocks(numStocks, i, results) {
+  if(i >= numStocks) {
+    return;
+  }
 
+  var symbol = results[i];
+
+  console.log("Symbol " + i + " is " + symbol);
+
+  $.ajax({
+    url: "/current?symbol=" + symbol,
+    type: "GET",
+    dataType: 'json',
+    contentType: "application/json; charset=utf-8",
+    //async: false,
+    success: function(results){
+      console.log("i for " + symbol + " is " + i);
+      console.log(results);
+      var StockObject = results['Realtime Global Securities Quote'];
+      console.log(StockObject);
+      var StockName = StockObject['01. Symbol'];
+      var StockPrice = StockObject['03. Latest Price'];
+      var StockPriceChange = StockObject['08. Price Change'];
+      var StockPriceChangePercent = StockObject['09. Price Change Percentage'];
+
+      var infoBox = document.createElement('div');
+      var textName = document.createElement('p');
+      var textPrice = document.createElement('p');
+      var textPriceChange = document.createElement('p');
+      var textPriceChangePercent = document.createElement('p');
+      var deleteButton = document.createElement('span');
+
+      infoBox.className = "infoBox";
+      textName.className = "stockName";
+      textPrice.className = "stockInfo";
+      textPriceChange.className = "stockInfo";
+      textPriceChangePercent.className = "stockInfo";
+      deleteButton.className = "delete";
+
+      textName.id = i + "_name";
+      infoBox.id = i + "_div";
+      deleteButton.id = "" + i;
+      console.log(StockName + " id is " + deleteButton.id);
+
+      var stockColor;
+      //change color of text
+      if(StockPriceChange < 0){
+        stockColor = "#ff6868";
+
+      }else{
+        stockColor = "#61ce81";
+      }
+
+      textName.innerHTML = StockName;
+      textPrice.innerHTML = "Current : $" + Math.round(StockPrice*100)/100;
+      textPriceChange.innerHTML = "Delta : $" + "<span style=color:"+stockColor+">"+Math.round(StockPriceChange*100)/100 + "</span>";
+      textPriceChangePercent.innerHTML = "Percent Change : " + "<span style=color:"+stockColor+">"+StockPriceChangePercent+"</span>";
+      deleteButton.innerHTML = "&times;";
+
+      var bar = document.createElement('div');
+      bar.className = "bar";
+
+      infoBox.appendChild(deleteButton);
+      infoBox.appendChild(textName);
+      infoBox.appendChild(bar);
+      infoBox.appendChild(textPrice);
+      infoBox.appendChild(textPriceChange);
+      infoBox.appendChild(textPriceChangePercent);
+
+      mountpoint.appendChild(infoBox);
+
+    }
+  })
+    //}, 300*i);
+  loadStocks(numStocks, i + 1, results);
+}
 
 
