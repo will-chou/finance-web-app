@@ -6,6 +6,9 @@ var app = express();
 var alphavantageRoute = require('./routes/alphavantage');
 var dbRoute = require('./routes/index');
 var session = require('express-session');
+var favicon = require('serve-favicon');
+
+
 
 
 
@@ -18,6 +21,8 @@ app.get('/',function(req, res, next){
 
 app.use(express.static(__dirname + '/public'));
 
+//set app icon
+app.use(favicon(__dirname + '/public/styles/icon.png'));
 
 // Parse JSON body and store result in req.body
 app.use(bodyParser.json());
