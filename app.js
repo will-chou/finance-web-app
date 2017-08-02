@@ -1,7 +1,6 @@
 var url = require('url');
 var express = require('express');
 var bodyParser = require('body-parser');
-var config = require('./config.json');
 var app = express();
 var alphavantageRoute = require('./routes/alphavantage');
 var dbRoute = require('./routes/index');
@@ -37,8 +36,8 @@ app.use(function (req, res, next){ //configure for cross origin headers
 });
 
 
-app.listen(config.port, function() {
-	console.log("Listening on port " + config.port);
+app.listen(process.env.PORT || 3000, function() {
+	console.log("Listening");
 });
 
 
