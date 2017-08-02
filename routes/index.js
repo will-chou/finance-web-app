@@ -5,7 +5,12 @@ var mongoose = require('mongoose');
 
 //database connection
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:/test', {useMongoClient: true});
+
+//FOR PRODUCTION
+mongoose.connect(process.env.MONGODB_URI);
+
+//FOR TESTING
+//mongoose.connect('mongodb://localhost:/test', {useMongoClient: true});
 
 			//////////////////////////////
 			//////////////////////////////
